@@ -15,7 +15,13 @@ def play_sound(sound_file):
         pass
     
 def handle_keypress(char):
-    sound_folder = "\\audio\\english"
+    sound_folder = "\\audio\\pt-br"
+
+    if char == "?":
+        char = "interrogacao"
+    elif char == "!":
+        char = "exclamacao"
+
     sound_file = f"{location}{sound_folder}\\{char}.wav"
     
     # Correctly create a thread to play the sound
