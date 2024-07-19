@@ -11,6 +11,9 @@ class keysoundsTray:
         self.voice_list = [i for i in listdir(f"{getcwd()}/media/audio") if i[0] != "~"]
         self.img_path = f"{getcwd()}/media/icon/neutral.png"
 
+        if len(self.voice_list) <= 0:
+            raise Exception("None voices where found. Please add one or reinstall the program.")
+
         self.keysounds_icon()
 
     def keysounds_icon(self):
