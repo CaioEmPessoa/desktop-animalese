@@ -8,7 +8,8 @@ class keysoundsTray:
 
         self.active_state = True
         self.voice_state = True
-        self.voice_list = [i for i in listdir(f"{getcwd()}/media/audio") if i[0] != "~"]
+        self.lang_list = [i for i in listdir(f"{getcwd()}/media/audio") if i[0] != "~"]
+        self.voice_list = [i for i in listdir(f"{getcwd()}/media/audio/pt-br/") if i[0] != "~"]
         self.img_path = f"{getcwd()}/media/icon/neutral.png"
 
         if len(self.voice_list) <= 0:
@@ -33,8 +34,12 @@ class keysoundsTray:
     def keysounds_menu(self):
         return Menu(
             MenuItem("Activate", self.toggle_active, checked= lambda item: self.active_state),
-            # SUBMENU
-            MenuItem("Change Voice", Menu(
+            # LANG SUBMENU
+            MenuItem("Change Language", Menu(
+                lambda: [MenuItem(lang, lambda x, lang=lang: self.toggle_voice(lang), checked= lambda x: False) for lang in self.lang_list]
+            )),
+            # VOICES SUBMENU
+            MenuItem("Change Voices", Menu(
                 lambda: [MenuItem(voice, lambda x, voice=voice: self.toggle_voice(voice), checked= lambda x: False) for voice in self.voice_list]
             )),
             MenuItem("Exit", lambda icon: icon.stop())
