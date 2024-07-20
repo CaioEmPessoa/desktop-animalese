@@ -2,15 +2,21 @@ from pystray import *
 from PIL import Image
 from os import getcwd, listdir
 
-class keysoundsTray:
+from rw import read_data, write_data
+
+class keysoundsTray():
     def __init__(self):
         super().__init__()
 
         self.voice_list = [i for i in listdir(f"{getcwd()}/media/audio/") if i[0] != "~"]
         self.img_path = f"{getcwd()}/media/icon/neutral.png"
 
+        self.data = read_data()
+
         self.active_state = True
-        self.active_voice = "None"
+        self.active_voice = self.data["voice"]
+
+        print(self.active_voice)
 
         if len(self.voice_list) <= 0:
             raise Exception("None voices where found. Please add one or reinstall the program.")
@@ -45,9 +51,10 @@ class keysoundsTray:
     def toggle_radio(self, item):
         if item in self.voice_list:
             self.active_voice = item
+            self.data["voice"] = self.active_voice
+            write_data(self.data)
     
     def radio_check(self, item):
-        # Could be in one if statemant but I prefer this way, better organized
         if item in self.voice_list and item == self.active_voice:
             return True
         else:

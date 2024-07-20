@@ -5,7 +5,7 @@ from playsound import playsound
 
 from main_stray import keysoundsTray
 
-class keysounds:
+class keysounds():
     def __init__(self):
         super().__init__()
 
