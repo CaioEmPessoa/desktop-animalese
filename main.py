@@ -38,6 +38,13 @@ class keysounds():
             char = "interrogacao"
         elif char == "!":
             char = "exclamacao"
+        elif char == "backspace":
+            char = "space"
+        # if char not in list and not a special one, proceed to strip it down and play each separate letter for it.
+        elif len(char) > 1 and char+".wav" not in os.listdir(self.location+sound_folder):
+            for rchar in char:
+                self.handle_keypress(rchar)
+            return
 
         sound_file = f"{self.location}{sound_folder}\\{char}.wav"
         
