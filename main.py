@@ -24,35 +24,39 @@ class keysounds():
         print("exit")
         exit()
 
-    def play_sound(self, sound_file):
-        try:
-            playsound(sound_file)
-        except:
-            print(f"File not found: '.{sound_file[len(self.location):]}'")
-            pass
+    def play_char(self, sound_file):
+
+        sound_thread = threading.Thread(target=playsound, args=(sound_file,))
+        sound_thread.start()
+
         
     def handle_keypress(self, char):
-        sound_folder = f"\\media\\audio\\{self.tray.active_voice}"
+        sound_folder = f"{self.location}\\media\\audio\\{self.tray.active_voice}"
+        char_list = os.listdir(sound_folder)
 
+        # just proof of concept.
+        if len(char_list) == 1:
+            print(f"{sound_folder}\\{char_list[0]}", "PENIS")
+            self.play_char(f"{sound_folder}\\{char_list[0]}")
+            return
+
+        # TODO: optimize this later.
         if char == "?":
             char = "interrogacao"
         elif char == "!":
             char = "exclamacao"
         elif char == "backspace":
             char = "space"
+        elif char == "delete":
+            char = "del"
         # if char not in list and not a special one, proceed to strip it down and play each separate letter for it.
-        elif len(char) > 1 and char+".wav" not in os.listdir(self.location+sound_folder):
+        elif len(char) > 1 and char+".wav" not in char_list:
             for rchar in char:
-                self.handle_keypress(rchar)
+                self.play_char(f"{sound_folder}\\{rchar}.wav")
             return
 
-        sound_file = f"{self.location}{sound_folder}\\{char}.wav"
-        
-        print(char)
+        self.play_char(f"{sound_folder}\\{char}.wav")
 
-        # Correctly create a thread to play the sound
-        sound_thread = threading.Thread(target=self.play_sound, args=(sound_file,))
-        sound_thread.start()
         
     def on_key_press(self, event):
         # do nothing when inactive.
